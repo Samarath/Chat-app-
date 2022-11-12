@@ -1,17 +1,24 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 
-const Signin = () => {
+const Signin = ({socket}) => {
 
     const [username, setUsername] = useState('');
+    const [checkingUser, setCheckinguser] = useState('');
     const nevigate = useNavigate();
 
     const submitrequest = (e) => {
         e.preventDefault();
-        const inputValue = document.getElementById('username');
-        // inputValue.value = ''
-        nevigate('/chats')
-        localStorage.setItem('user', username);
+       
+        socket.emit('username', username);
+        socket.on('userExits', data => setCheckinguser(data));
+            
+        if(checkingUser[0] === 404){
+            console.log('IDK its taken');
+        }else{
+            nevigate('/chats');
+        }
+        // localStorage.setItem('user', username);
     }
 
     return(

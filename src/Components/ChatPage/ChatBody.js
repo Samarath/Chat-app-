@@ -1,10 +1,11 @@
+
 const Chatbody = ({getMessage}) => {
-    console.log(getMessage)
+    console.log(getMessage, 'inside chat body')
     return(
         <div className='message_body'>
 
             <div className='message_status'>
-                <h3>{localStorage.getItem('user')}</h3>
+                <h3>Hangout with friends</h3>
                 <button>Leave chat</button>
             </div>
 

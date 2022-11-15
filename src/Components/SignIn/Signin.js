@@ -1,16 +1,21 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
+import {useSelector, useDispatch} from 'react-redux';
+import {getUsername} from '../../Actions/index';
 
 const Signin = ({socket}) => {
 
-    const [username, setUsername] = useState('');
+    // const [username, setUsername] = useState('');
     const [checkingUser, setCheckinguser] = useState('');
     const nevigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const Username = useSelector((state) => state.Username);
 
     const submitrequest = (e) => {
         e.preventDefault();
        
-        socket.emit('username', username);
+        socket.emit('username', Username);
         socket.on('userExits', data => setCheckinguser(data));
             
         if(checkingUser[0] === 404){
@@ -18,7 +23,7 @@ const Signin = ({socket}) => {
         }else{
             nevigate('/chats');
         }
-        // localStorage.setItem('user', username);
+        console.log(Username)
     }
 
     return(
@@ -30,9 +35,9 @@ const Signin = ({socket}) => {
                  name='username'
                  id='username'
                  minLength={4}
-                 value={username}
+                 value={Username}
                  className='user_input'
-                 onChange={(e) => setUsername(e.target.value)}
+                 onChange={(e) => dispatch(getUsername(e.target.value))}
             />
             <button className='submit_btn'>Let's Chat</button>
         </form>

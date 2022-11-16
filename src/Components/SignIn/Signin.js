@@ -1,29 +1,31 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux';
-import {getUsername} from '../../Actions/index';
+import {getUsername, userexits} from '../../Actions/index';
 
 const Signin = ({socket}) => {
 
     // const [username, setUsername] = useState('');
-    const [checkingUser, setCheckinguser] = useState('');
     const nevigate = useNavigate();
     const dispatch = useDispatch();
 
     const Username = useSelector((state) => state.Username);
+    const Checkuserexits = useSelector((state) => state.Checkuserexits);
 
     const submitrequest = (e) => {
         e.preventDefault();
        
-        socket.emit('username', Username);
-        socket.on('userExits', data => setCheckinguser(data));
+        socket.emit('username', Username.toLowerCase());// sending the username to the server
+
+        socket.on('userExits', data => dispatch(userexits(data)));
             
-        if(checkingUser[0] === 404){
-            console.log('IDK its taken');
-        }else{
+        if(Checkuserexits[0] !== 404){
             nevigate('/chats');
+        }else if(Checkuserexits[0] === 404){
+            alert('user already here')
+           console.log('user already here'); 
         }
-        console.log(Username)
+        
     }
 
     return(

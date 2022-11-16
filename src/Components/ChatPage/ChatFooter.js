@@ -1,21 +1,31 @@
-import { useState } from "react"
+import { useSelector, useDispatch } from "react-redux";
+
+import { messages } from "../../Actions";
 
 const ChatFooter = ({socket}) => {
 
-    const [message, setMessage] = useState('');
+    // const [message, setMessage] = useState('');
+
+    const Username = useSelector((state) => state.Username);
+    const UserMessages = useSelector((state) => state.Message);
+
+    const dispatch = useDispatch();
+
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if(message.trim()){
+
+        if(UserMessages.trim()){
+
           socket.emit('message', {
-            text:message,
-            name: localStorage.getItem('user'),
+            text:UserMessages,
+            name: Username,
             id: `${socket.id}${Math.random()}`,
             socketID: socket.id,
           })
         }
 
-        setMessage('');
+        dispatch(messages(''));
         
     }
 
@@ -25,8 +35,8 @@ const ChatFooter = ({socket}) => {
             <input 
                type='text'
                placeholder='write message'
-               value={message}
-               onChange={(e) => setMessage(e.target.value)} 
+               value={UserMessages}
+               onChange={(e) => dispatch(messages(e.target.value))} 
                className='chat_input'
             />
             <button className="send_btn">SEND</button>

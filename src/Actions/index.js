@@ -4,3 +4,17 @@ export const getUsername = (value) => {
         value
     };
 }
+
+export const userexits = (value) => {
+    return {
+        type: 'USER_EXITS',
+        value
+    }
+}
+
+export const messages = (value) => {
+    return{
+        type: 'MESSAGE',
+        value
+    }
+}

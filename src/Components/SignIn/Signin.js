@@ -1,30 +1,34 @@
-import {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux';
 import {getUsername, userexits} from '../../Actions/index';
+import { useEffect } from 'react';
 
 const Signin = ({socket}) => {
 
-    // const [username, setUsername] = useState('');
+    useEffect(() => {
+        socket.on('userExits', data => dispatch(userexits(data)))
+    }, [socket])
+
     const nevigate = useNavigate();
     const dispatch = useDispatch();
 
     const Username = useSelector((state) => state.Username);
-    const Checkuserexits = useSelector((state) => state.Checkuserexits);
+    const Checkuser = useSelector((state) => state.Checkuserexits);
 
     const submitrequest = (e) => {
         e.preventDefault();
        
         socket.emit('username', Username.toLowerCase());// sending the username to the server
-
-        socket.on('userExits', data => dispatch(userexits(data)));
             
-        if(Checkuserexits[0] !== 404){
+        // if(Checkuser[0] === 404 && Checkuser[1] === Username){
+  
+        //     alert('you was her already');
+        // }else if(Checkuser[0] !== 404){
+        //     nevigate('/chats');
+        // }
             nevigate('/chats');
-        }else if(Checkuserexits[0] === 404){
-            alert('user already here')
-           console.log('user already here'); 
-        }
+
+        // console.log(Checkuser);    
         
     }
 

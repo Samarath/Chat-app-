@@ -11,7 +11,7 @@ const ChatPage = ({socket}) => {
     socket.on('sendMessagetoAll', data => setGetMessage([...getMessage, data]));
   }, [socket, getMessage]);
 
-  console.log(getMessage, 'chat page')
+  // console.log(getMessage, 'chat page')
 
     return(
         <div className="chat">
